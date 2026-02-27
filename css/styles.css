@@ -38,6 +38,21 @@ body {
     flex-direction: column;
 }
 
+.right-bar {
+    width: 280px;
+    background-color: var(--sidebar);
+    padding: 30px 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1300px) {
+    .right-bar {
+        display: none;
+    }
+}
+
 .sidebar-logo {
     font-size: 22px;
     font-weight: 700;
@@ -51,6 +66,7 @@ body {
     flex: 1;
     padding: 40px 50px;
     background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05), transparent);
+    overflow-y: auto;
 }
 
 .card {
