@@ -10,4 +10,5 @@
 //
 // The frontend will automatically use this URL for all API calls.
 
-window.BACKEND_URL = 'https://YOUR-TUNNEL-URL.trycloudflare.com';
+window.BACKEND_URL = ' https://variables-tourism-pix-myspace.trycloudflare.com';
+
