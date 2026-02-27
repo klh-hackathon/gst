@@ -1,7 +1,21 @@
-// API endpoint – uses relative path when served from the FastAPI backend.
-// When deploying via Cloudflare Worker proxy, change this to:
-// const API_BASE = 'https://gstreconciliation.ajay1209120912.workers.dev/api';
-const API_BASE = '/api';
+// ── API Base URL Configuration ─────────────────────────────────────────
+// Auto-detect: if running on localhost → use relative /api
+// If running on GitHub Pages → use Cloudflare Tunnel URL from config
+function getApiBase() {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0') {
+        return '/api';  // Local development — served by FastAPI
+    }
+    // When deployed on GitHub Pages, read the tunnel URL from config
+    // Update this with your actual Cloudflare Tunnel URL
+    const tunnelUrl = localStorage.getItem('backend_url') || window.BACKEND_URL || '';
+    if (tunnelUrl) {
+        return tunnelUrl.replace(/\/$/, '') + '/api';
+    }
+    return '/api'; // fallback
+}
+
+const API_BASE = getApiBase();
 
 export async function getToken() {
     return localStorage.getItem('auth_token');
@@ -82,8 +96,8 @@ export const api = {
         localStorage.setItem('auth_token', data.access_token);
         return data;
     },
-    register: async (email, password) => {
-        const data = await request('POST', '/auth/register', { email, password });
+    register: async (payload) => {
+        const data = await request('POST', '/auth/register', payload);
         localStorage.setItem('auth_token', data.access_token);
         return data;
     },
@@ -99,4 +113,16 @@ export const api = {
     getVendorRisks: () => request('GET', '/dashboard/vendor-risks'),
     getAnalytics: () => request('GET', '/analytics/detailed'),
     getSettings: () => request('GET', '/settings'),
+    getProfile: () => request('GET', '/user/profile'),
+    updateProfile: (data) => request('PATCH', '/user/profile', data),
+
+    // Knowledge Graph APIs
+    getUserGraph: () => request('GET', '/graph/user'),
+    getAdminGraph: () => request('GET', '/graph/admin'),
+    getGraphNode: (gstin) => request('GET', `/graph/node/${gstin}`),
+
+    // Fraud Intelligence APIs
+    getEntityRisk: (gstin) => request('GET', `/fraud/entity/${gstin}`),
+    getCycles: () => request('GET', '/fraud/cycles'),
+    runDbScan: () => request('GET', '/fraud/db-scan'),
 };

@@ -188,9 +188,10 @@
         </div>
     </div>
 
+    <script src="js/config.js"></script>
     <script type="module">
         import { api, requireAuth } from './js/api.js';
-        import { initSidebar, formatINR, riskBadge } from './js/shared.js';
+        import { initSidebar, initHeader, formatINR, riskBadge } from './js/shared.js';
 
         async function start() {
             console.log('Starting Dashboard...');
@@ -198,8 +199,9 @@
             const authenticated = await requireAuth();
             if (!authenticated) return;
 
-            // Initialize Sidebar
+            // Initialize UI components
             initSidebar('dashboard');
+            initHeader(api);
 
             // Set up sidebar logout button click listener (since it was injected)
             document.addEventListener('click', (e) => {
