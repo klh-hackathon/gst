@@ -10,5 +10,6 @@
 //
 // The frontend will automatically use this URL for all API calls.
 
-window.BACKEND_URL = ' https://variables-tourism-pix-myspace.trycloudflare.com';
+window.BACKEND_URL = 'https://remind-stood-bennett-thats.trycloudflare.com';
+
 
